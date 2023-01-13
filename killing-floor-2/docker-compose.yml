@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  killing-floor-2:
+    container_name: killing-floor-2
+    image: antimodes201/kf2-server:latest
+    # Uncomment this to skip auto-update
+    #command: update validate
+    #command: update -beta preview validate
+    restart: unless-stopped
+    ports:
+      - "20560:20560/udp"
+      - "27015:27015/udp"
+      - "7777:7777/udp"
+      - "8099:8080"
+    environment:
+      - ADMIN="admin"
+      - PASSWORD="password"
+      - MAP="KF-BurningParis"
+    volumes:
+      - /game-data/kf2/:/app
+    logging:
+      # limit logs retained on host to 25MB
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "50"
