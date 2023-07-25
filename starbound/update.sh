@@ -12,3 +12,5 @@ steamcmd +force_install_dir /starbound \
   +login "${username}" \
   +app_update 211820 validate \
   +quit
+
+rm /.update
