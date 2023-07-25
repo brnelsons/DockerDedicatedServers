@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   minecraft-vanilla:
+    # https://github.com/itzg/docker-minecraft-server
     container_name: minecraft-vanilla
     image: itzg/minecraft-server
     restart: unless-stopped

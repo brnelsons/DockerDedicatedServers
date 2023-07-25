@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  # https://github.com/itzg/docker-minecraft-server
+  minecraft-vanilla:
+    container_name: minecraft-vanilla
+    image: itzg/minecraft-server
+    restart: unless-stopped
+    ports:
+      - "25565:25565"
+      - "25575:25575"
+    environment:
+      ANNOUNCE_PLAYER_ACHIEVEMENTS: true
+      ENABLE_COMMAND_BLOCK: true
+      EULA: true
+      FORCE_GAMEMODE: true
+      GENERATE_STRUCTURES: true
+      MAX_MEMORY: 4G
+      MEMORY: 2G
+      RCON_PASSWORD: password
+      TYPE: VANILLA
+      VERSION: LATEST
+      VIEW_DISTANCE: 15
+    volumes:
+      - /game-data/mc-server:/data
+  # https://github.com/itzg/docker-mc-backup
+  minecraft-vanilla-backup:
+    image: itzg/mc-backup
+    environment:
+      BACKUP_INTERVAL: "24h"
+      RCON_HOST: minecraft-vanilla
+      PAUSE_IF_NO_PLAYERS: trie
+      PRE_BACKUP_SCRIPT: |
+        echo "Before backup!"
+        echo "Also before backup from $$RCON_HOST to $$DEST_DIR"
+      POST_BACKUP_SCRIPT: |
+        echo "Backup from $$RCON_HOST to $$DEST_DIR finished"
+    volumes:
+      # mount the same volume used by server, but read-only
+      - /game-data/mc-server:/data:ro
+      # use a host attached directory so that it in turn can be backed up
+      # to external/cloud storage
+      - /game-data/mc-server-backups:/backups

@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+    starbound-server:
+        build: ..
+        container_name: starbound-docker
+        ports:
+            - "21025:21025"
+        volumes:
+            - ./data:/starbound
